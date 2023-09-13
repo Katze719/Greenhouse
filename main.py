@@ -34,6 +34,11 @@ while True:
     print("Feuchtigkeit: %-3.1f %%" % result.humidity)
 
     segment[0] = str(result.temperature)[0]
+    segment[1] = str(result.temperature)[1]
+    segment[2] = str(result.temperature)[2]
+    segment[3] = 'C'
+
+    segment.colon = True
 
     segment.show()
     
