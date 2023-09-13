@@ -35,10 +35,10 @@ while True:
 
     segment[0] = str(result.temperature)[0]
     segment[1] = str(result.temperature)[1]
-    segment[2] = str(result.temperature)[2]
+    segment[2] = str(result.temperature)[3]
     segment[3] = 'C'
 
-    segment.colon = True
+    segment.colon = False
 
     segment.show()
     
