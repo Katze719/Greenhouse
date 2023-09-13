@@ -36,7 +36,7 @@ while True:
     segment[0] = str(result.temperature)[0]
     segment[1] = str(result.temperature)[1]
     bin_str = ''.join(format(ord(i), '08b') for i in str(result.temperature)[3])
-    segment.set_digit_raw(2, bin_str | 0b10000000)
+    segment.set_digit_raw(2, 0b10000000)
     segment[3] = 'C'
 
 
