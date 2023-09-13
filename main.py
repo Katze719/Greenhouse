@@ -35,10 +35,9 @@ while True:
 
     segment[0] = str(result.temperature)[0]
     segment[1] = str(result.temperature)[1]
-    # segment[2] = str(result.temperature)[3]
+    segment.set_digit_raw(2, str(result.temperature[3]).encode('ascii') | 0b10000000)
     segment[3] = 'C'
 
-    segment.set_digit_raw(2, str(result.temperature[3]).encode('ascii') & 0b10000000)
 
     segment.colon = False
 
