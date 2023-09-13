@@ -16,6 +16,8 @@ GPIO.cleanup()
 instance = dht11.DHT11(pin = 4)
 
 while True:
+    time.sleep(1)
+
     result = instance.read()
 
     while not result.is_valid():
@@ -24,7 +26,3 @@ while True:
     print("Temperatur: %-3.1f C" % result.temperature)
     print("Feuchtigkeit: %-3.1f %%" % result.humidity)
     
-    time.sleep(0.5)
-
-
-print("hello world")
