@@ -17,5 +17,5 @@ pw: adminadmin
 ## Blockschaltplan
 ![Blockschaltplan](./Doc/Blockschaltplan.svg)
 
-## PAP
-![PAP](./Doc/PAP.png)
+## Struckktogramm
+![Strucktogramm](./Doc/strucktogramm.png)
