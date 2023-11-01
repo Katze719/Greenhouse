@@ -19,3 +19,14 @@ pw: adminadmin
 
 ## Strucktogramm
 ![Strucktogramm](./Doc/strucktogramm.png)
+
+## Script Ausführen
+
+```sh
+python3 ./main.py
+```
+oder
+```sh
+chmod +x ./main.py # muss nur einmalig gemacht werden
+./main.py
+```
