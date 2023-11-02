@@ -21,17 +21,20 @@ i2c = board.I2C()
 segment = Seg7x4(i2c, address=0x70)
 segment.fill(0)
 
+measurements = 0
+
 
 while True:
     time.sleep(1)
-
+    measurements += 1
     result = instance.read()
 
     while not result.is_valid():
         result = instance.read()
 
-    print("Temperatur: %-3.1f C" % result.temperature)
-    print("Feuchtigkeit: %-3.1f %%" % result.humidity)
+    print("Temperatur: %-3.1f C" % result.temperature, end='\r')
+    print("Feuchtigkeit: %-3.1f %%" % result.humidity, end='\n')
+    print(f"Messung: {measurements}")
 
     segment[0] = str(result.temperature)[0]
     segment[1] = str(result.temperature)[1]
