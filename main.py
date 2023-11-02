@@ -33,8 +33,8 @@ while True:
         result = instance.read()
 
     print("Temperatur: %-3.1f C" % result.temperature, end='\r')
-    print("Feuchtigkeit: %-3.1f %%" % result.humidity, end='\n')
-    print(f"Messung: {measurements}")
+    print("Feuchtigkeit: %-3.1f %%" % result.humidity, end='\r')
+    print(f"Messung: {measurements}", end='\r')
 
     segment[0] = str(result.temperature)[0]
     segment[1] = str(result.temperature)[1]
