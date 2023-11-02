@@ -8,6 +8,7 @@ this is the main python file
 import RPi.GPIO as GPIO
 import dht11
 import time
+import curses
 import board
 from adafruit_ht16k33.segments import Seg7x4
 
@@ -23,27 +24,34 @@ segment.fill(0)
 
 measurements = 0
 
+def main(stdscr):
 
-while True:
-    time.sleep(1)
-    measurements += 1
-    result = instance.read()
+    curses.curs_set(0)
 
-    while not result.is_valid():
+    while True:
+        time.sleep(1)
+        measurements += 1
         result = instance.read()
 
-    print("Temperatur: %-3.1f C" % result.temperature, end='\r')
-    print("Feuchtigkeit: %-3.1f %%" % result.humidity, end='\r')
-    print(f"Messung: {measurements}", end='\r')
+        while not result.is_valid():
+            result = instance.read()
 
-    segment[0] = str(result.temperature)[0]
-    segment[1] = str(result.temperature)[1]
-    segment[1] = str(result.temperature)[2]
-    segment[2] = str(result.temperature)[3]
-    segment[3] = 'C'
+        stdscr.addstr(0, 0, "Temperatur: %-3.1f C" % result.temperature)
+        stdscr.addstr(1, 0, "Feuchtigkeit: %-3.1f %%" % result.humidity)
+        stdscr.addstr(2, 0, f"Messung: {measurements}")
+        stdscr.refresh()
+
+        segment[0] = str(result.temperature)[0]
+        segment[1] = str(result.temperature)[1]
+        segment[1] = str(result.temperature)[2]
+        segment[2] = str(result.temperature)[3]
+        segment[3] = 'C'
 
 
-    segment.colon = False
+        segment.colon = False
 
-    segment.show()
+        segment.show()
     
+
+if __name__ == '__main__':
+    curses.wrapper(main)
