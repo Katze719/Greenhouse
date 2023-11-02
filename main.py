@@ -22,9 +22,9 @@ i2c = board.I2C()
 segment = Seg7x4(i2c, address=0x70)
 segment.fill(0)
 
-measurements = 0
 
 def main(stdscr):
+    measurements = 0
 
     curses.curs_set(0)
 
