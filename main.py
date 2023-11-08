@@ -24,6 +24,7 @@ instance = dht11.DHT11(pin = 4)
 i2c = board.I2C()
 segment = Seg7x4(i2c, address=0x70)
 segment.fill(0)
+segment.colon = False
 
 # main funktion
 def main(stdscr):
@@ -31,6 +32,8 @@ def main(stdscr):
     measurements = 0
 
     curses.curs_set(0)
+
+    stdscr.addstr(4, 0, "Zum Abbrechen drücken sie 2x Strg+C")
     
     # loop für das messen und anzeigen der daten
     while True:
@@ -62,8 +65,6 @@ def main(stdscr):
         segment[1] = str(result.temperature)[2]
         segment[2] = str(result.temperature)[3]
         segment[3] = 'C'
-
-        segment.colon = False
 
         # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
         segment.show()
