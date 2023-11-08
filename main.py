@@ -28,6 +28,16 @@ segment.fill(0)
 segment.colon = False
 
 def main(stdscr):
+
+    def addDataLineToTerminal(line_number, title, data):
+        stdscr.addstr(line_number, 0, title)
+        stdscr.addstr(line_number, 14, data)
+
+    def addKeyDescriptionToTerminal(line_number, key, description):
+        stdscr.addstr(line_number, 0, key)
+        stdscr.addstr(line_number, 10, "->")
+        stdscr.addstr(line_number, 12, description)
+
     # Initialisiert die Anzahl der Messungen.
     measurements = 0
 
@@ -35,12 +45,9 @@ def main(stdscr):
     curses.curs_set(0)
 
     # Fügt Informationen zur Bedienung des Programms im Terminal hinzu.
-    stdscr.addstr(4, 0, "Strg+C")
-    stdscr.addstr(4, 12, "-> Programm Abbrechen")
-    stdscr.addstr(5, 0, "Linksklick")
-    stdscr.addstr(5, 12, "-> Konsole Pausieren (Programm läuft im Hintergrund weiter)")
-    stdscr.addstr(6, 0, "Rechtsklick")
-    stdscr.addstr(6, 12, "-> Konsole Weiter")
+    addKeyDescriptionToTerminal(4, "Strg+C", "Programm Abbrechen")
+    addKeyDescriptionToTerminal(5, "Linksklick", "Konsole Pausieren (Programm läuft im Hintergrund weiter)")
+    addKeyDescriptionToTerminal(6, "Rechtsklick", "Konsole Weiter")
 
     # Eine Variable, um zwischen Temperatur und Feuchtigkeit auf dem 7-Segment-Display zu wechseln.
     change = 0
@@ -71,12 +78,9 @@ def main(stdscr):
             result = instance.read()
 
         # Zeigt die gemessenen Werte im Terminal an.
-        stdscr.addstr(0, 0, "Temperatur:")
-        stdscr.addstr(0, 14, f"{result.temperature} C")
-        stdscr.addstr(1, 0, "Feuchtigkeit:")
-        stdscr.addstr(1, 14, f"{result.humidity} %")
-        stdscr.addstr(2, 0, f"Messung:")
-        stdscr.addstr(2, 14, f"{measurements}")
+        addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
+        addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
+        addDataLineToTerminal(2, "Messung:", f"{measurements}")
         stdscr.refresh()
 
         # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
