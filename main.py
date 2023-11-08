@@ -40,6 +40,9 @@ def main(stdscr):
     stdscr.addstr(5, 12, "-> Konsole Pausieren (Programm läuft im Hintergrund weiter)")
     stdscr.addstr(6, 0, "Rechtsklick")
     stdscr.addstr(6, 12, "-> Konsole Weiter")
+
+    # variable für das ändern der anzeige auf dem 7 segment
+    change = 0
     
     # loop für das messen und anzeigen der daten
     while True:
@@ -70,15 +73,30 @@ def main(stdscr):
         # Buffer flushen (anzeigen in der Konsole)
         stdscr.refresh()
 
-        # Temperatur in den buffer von der 7 segment anzeige schreiben 
-        segment[0] = str(result.temperature)[0]
-        segment[1] = str(result.temperature)[1]
-        segment[1] = str(result.temperature)[2]
-        segment[2] = str(result.temperature)[3]
-        segment[3] = 'C'
+        if change < 3:
+            # Temperatur in den buffer von der 7 segment anzeige schreiben 
+            segment[0] = str(result.temperature)[0]
+            segment[1] = str(result.temperature)[1]
+            segment[1] = str(result.temperature)[2]
+            segment[2] = str(result.temperature)[3]
+            segment[3] = 'C'
+        else:
+            # Temperatur in den buffer von der 7 segment anzeige schreiben 
+            segment[0] = str(result.humidity)[0]
+            segment[1] = str(result.humidity)[1]
+            segment[1] = str(result.humidity)[2]
+            segment[2] = str(result.humidity)[3]
+            segment[3] = 'P'
+
 
         # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
         segment.show()
+
+        if change >= 6:
+            change = 0
+
+        # zum change eine sekunde hinzufügen
+        change += 1
 
 # Funktion main wird aufgerufen wenn das script direkt in der konsole gestartet wird
 if __name__ == '__main__':
