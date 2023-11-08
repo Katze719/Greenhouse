@@ -52,7 +52,7 @@ def main(stdscr):
 
         # Temperatur in den Konsolen buffer schreiben, auf zeile eins
         stdscr.addstr(0, 0, "Temperatur:")
-        stdscr.addstr(0, 14, f"{result.temperature}\u2103C")
+        stdscr.addstr(0, 14, f"{result.temperature} C")
         # Feuchtigkeit in den Konsolen buffer schreiben, auf zeile zwei
         stdscr.addstr(1, 0, "Feuchtigkeit:")
         stdscr.addstr(1, 14, f"{result.humidity}%")
