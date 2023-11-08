@@ -73,7 +73,7 @@ def main(stdscr):
         # Buffer flushen (anzeigen in der Konsole)
         stdscr.refresh()
 
-        if change < 3:
+        if change < 5:
             # Temperatur in den buffer von der 7 segment anzeige schreiben 
             segment[0] = str(result.temperature)[0]
             segment[1] = str(result.temperature)[1]
@@ -92,7 +92,7 @@ def main(stdscr):
         # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
         segment.show()
 
-        if change >= 6:
+        if change >= 10:
             change = 0
 
         # zum change eine sekunde hinzufügen
