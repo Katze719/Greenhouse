@@ -33,7 +33,12 @@ def main(stdscr):
 
     curses.curs_set(0)
 
-    stdscr.addstr(4, 0, "Zum Abbrechen drücken sie Strg+C")
+    stdscr.addstr(4, 0, "Strg+C")
+    stdscr.addstr(4, 12, "-> Programm Abbrechen")
+    stdscr.addstr(5, 0, "Linksklick")
+    stdscr.addstr(5, 12, "-> Konsole Pausieren (Programm läuft im Hintergrund weiter)")
+    stdscr.addstr(6, 0, "Rechtsklick")
+    stdscr.addstr(6, 12, "-> Konsole Weiter")
     
     try:
 
