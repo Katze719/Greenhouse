@@ -56,7 +56,7 @@ def main(stdscr):
 
         # Wenn 5 sekunden vergangen sind, Anzeige aktualisieren
         if current_time - last_display_time >= 5:
-            change = (change + 1) % 2
+            change = (change + 1) % 2 # Wechsel zwischen 0 (Temperatur) und 1 (Luftfeuchtigkeit)
             last_display_time = current_time
 
         # anzahl der messungen um eins erhöhen
