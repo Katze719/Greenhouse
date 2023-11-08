@@ -2,7 +2,7 @@
 """
 main.py
 
-this is the main python file
+Hier beginnt und hört das Programm auf
 """
 
 import RPi.GPIO as GPIO
@@ -55,9 +55,11 @@ def main(stdscr):
             # Temperatur in den Konsolen buffer schreiben, auf zeile eins
             stdscr.addstr(0, 0, "Temperatur:")
             stdscr.addstr(0, 14, f"{result.temperature} C")
+
             # Feuchtigkeit in den Konsolen buffer schreiben, auf zeile zwei
             stdscr.addstr(1, 0, "Feuchtigkeit:")
-            stdscr.addstr(1, 14, f"{result.humidity}%")
+            stdscr.addstr(1, 14, f"{result.humidity} %")
+
             # Messungs zähler in den Konsolen buffer schreiben, auf zeile drei
             stdscr.addstr(2, 0, f"Messung:")
             stdscr.addstr(2, 14, f"{measurements}")
@@ -75,7 +77,7 @@ def main(stdscr):
             segment.show()
     except KeyboardInterrupt:
         segment.fill(0)    
-        
+
 # Funktion main wird aufgerufen wenn das script direkt in der konsole gestartet wird
 if __name__ == '__main__':
     curses.wrapper(main)
