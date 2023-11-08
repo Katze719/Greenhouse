@@ -35,42 +35,46 @@ def main(stdscr):
 
     stdscr.addstr(4, 0, "Zum Abbrechen drücken sie Strg+C")
     
-    # loop für das messen und anzeigen der daten
-    while True:
-        # eine sekunde warten, sollte reichen (zeit kann verringert werden wenn nötig)
-        time.sleep(1)
+    try:
 
-        # anzahl der messungen um eins erhöhen
-        measurements += 1
+        # loop für das messen und anzeigen der daten
+        while True:
+            # eine sekunde warten, sollte reichen (zeit kann verringert werden wenn nötig)
+            time.sleep(1)
 
-        # daten vom dht11 lesen
-        result = instance.read()
+            # anzahl der messungen um eins erhöhen
+            measurements += 1
 
-        # prüfen ob die daten valid sind, wenn nicht nochmal lesen
-        while not result.is_valid():
+            # daten vom dht11 lesen
             result = instance.read()
 
-        # Temperatur in den Konsolen buffer schreiben, auf zeile eins
-        stdscr.addstr(0, 0, "Temperatur:")
-        stdscr.addstr(0, 14, f"{result.temperature} C")
-        # Feuchtigkeit in den Konsolen buffer schreiben, auf zeile zwei
-        stdscr.addstr(1, 0, "Feuchtigkeit:")
-        stdscr.addstr(1, 14, f"{result.humidity}%")
-        # Messungs zähler in den Konsolen buffer schreiben, auf zeile drei
-        stdscr.addstr(2, 0, f"Messung:")
-        stdscr.addstr(2, 14, f"{measurements}")
-        # Buffer flushen (anzeigen in der Konsole)
-        stdscr.refresh()
+            # prüfen ob die daten valid sind, wenn nicht nochmal lesen
+            while not result.is_valid():
+                result = instance.read()
 
-        # Temperatur in den buffer von der 7 segment anzeige schreiben 
-        segment[0] = str(result.temperature)[0]
-        segment[1] = str(result.temperature)[1]
-        segment[1] = str(result.temperature)[2]
-        segment[2] = str(result.temperature)[3]
-        segment[3] = 'C'
+            # Temperatur in den Konsolen buffer schreiben, auf zeile eins
+            stdscr.addstr(0, 0, "Temperatur:")
+            stdscr.addstr(0, 14, f"{result.temperature} C")
+            # Feuchtigkeit in den Konsolen buffer schreiben, auf zeile zwei
+            stdscr.addstr(1, 0, "Feuchtigkeit:")
+            stdscr.addstr(1, 14, f"{result.humidity}%")
+            # Messungs zähler in den Konsolen buffer schreiben, auf zeile drei
+            stdscr.addstr(2, 0, f"Messung:")
+            stdscr.addstr(2, 14, f"{measurements}")
+            # Buffer flushen (anzeigen in der Konsole)
+            stdscr.refresh()
 
-        # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
-        segment.show()
+            # Temperatur in den buffer von der 7 segment anzeige schreiben 
+            segment[0] = str(result.temperature)[0]
+            segment[1] = str(result.temperature)[1]
+            segment[1] = str(result.temperature)[2]
+            segment[2] = str(result.temperature)[3]
+            segment[3] = 'C'
+
+            # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
+            segment.show()
+    except Exception as e:
+        print("Programm Abgebrochen")
     
 # Funktion main wird aufgerufen wenn das script direkt in der konsole gestartet wird
 if __name__ == '__main__':
