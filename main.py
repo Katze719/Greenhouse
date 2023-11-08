@@ -73,9 +73,9 @@ def main(stdscr):
 
             # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
             segment.show()
-    except Exception as e:
-        print("Programm Abgebrochen")
-    
+    except KeyboardInterrupt:
+        segment.fill(0)    
+        
 # Funktion main wird aufgerufen wenn das script direkt in der konsole gestartet wird
 if __name__ == '__main__':
     curses.wrapper(main)
