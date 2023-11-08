@@ -43,11 +43,21 @@ def main(stdscr):
 
     # variable für das ändern der anzeige auf dem 7 segment
     change = 0
+
+    last_display_time = time.time()
     
     # loop für das messen und anzeigen der daten
     while True:
         # eine sekunde warten, sollte reichen (zeit kann verringert werden wenn nötig)
         time.sleep(1)
+
+        # Aktuelle Zeit Abrufen
+        current_time = time.time()
+
+        # Wenn 5 sekunden vergangen sind, Anzeige aktualisieren
+        if current_time - last_display_time >= 5:
+            change = (change + 1) % 2
+            last_display_time = current_time
 
         # anzahl der messungen um eins erhöhen
         measurements += 1
@@ -73,7 +83,8 @@ def main(stdscr):
         # Buffer flushen (anzeigen in der Konsole)
         stdscr.refresh()
 
-        if change < 5:
+    
+        if change == 0:
             # Temperatur in den buffer von der 7 segment anzeige schreiben 
             segment[0] = str(result.temperature)[0]
             segment[1] = str(result.temperature)[1]
@@ -81,7 +92,7 @@ def main(stdscr):
             segment[2] = str(result.temperature)[3]
             segment[3] = 'C'
         else:
-            # Temperatur in den buffer von der 7 segment anzeige schreiben 
+            # Feuchtigkeit in den buffer von der 7 segment anzeige schreiben 
             segment[0] = str(result.humidity)[0]
             segment[1] = str(result.humidity)[1]
             segment[1] = str(result.humidity)[2]
@@ -91,12 +102,6 @@ def main(stdscr):
 
         # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
         segment.show()
-
-        if change >= 10:
-            change = 0
-
-        # zum change eine sekunde hinzufügen
-        change += 1
 
 # Funktion main wird aufgerufen wenn das script direkt in der konsole gestartet wird
 if __name__ == '__main__':
