@@ -50,7 +50,7 @@ def main(stdscr):
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
-        time.sleep(1)
+        time.sleep(0.5)
 
         # Speichert die aktuelle Zeit.
         current_time = time.time()
