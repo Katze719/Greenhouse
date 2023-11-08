@@ -51,11 +51,13 @@ def main(stdscr):
             result = instance.read()
 
         # Temperatur in den Konsolen buffer schreiben, auf zeile eins
-        stdscr.addstr(0, 12, "Temperatur: %-3.1f C" % result.temperature)
+        stdscr.addstr(0, 0, "Temperatur:")
+        stdscr.addstr(0, 15, f"{result.temperature} C")
         # Feuchtigkeit in den Konsolen buffer schreiben, auf zeile zwei
-        stdscr.addstr(1, 12, "Feuchtigkeit: %-3.1f %%" % result.humidity)
+        stdscr.addstr(1, 0, "Feuchtigkeit:")
+        stdscr.addstr(1, 15, f"{result.humidity}%")
         # Messungs zähler in den Konsolen buffer schreiben, auf zeile drei
-        stdscr.addstr(2, 12, f"Messung: {measurements}")
+        stdscr.addstr(2, 0, f"Messung: {measurements}")
         # Buffer flushen (anzeigen in der Konsole)
         stdscr.refresh()
 
