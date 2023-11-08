@@ -86,7 +86,7 @@ def main(stdscr):
             segment[1] = str(result.humidity)[1]
             segment[1] = str(result.humidity)[2]
             segment[2] = str(result.humidity)[3]
-            segment[3] = 'P'
+            segment.set_digit_raw(3, 0b11111111)
 
 
         # Daten auf der 7 segment anzeige aktuallisieren (anzeigen)
