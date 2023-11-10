@@ -56,8 +56,8 @@ def main(stdscr):
     last_display_time = time.time()
 
     while True:
-        # Verzögert die Schleife um 0,5 Sekunden.
-        time.sleep(0.5)
+        # Verzögert die Schleife um 1 Sekunde.
+        time.sleep(1)
 
         # Speichert die aktuelle Zeit.
         current_time = time.time()
