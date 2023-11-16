@@ -18,7 +18,7 @@ pw: adminadmin
 ![Blockschaltplan](./Doc/Blockschaltplan.svg)
 
 ## Strucktogramm
-![Strucktogramm](./Doc/strucktogramm-v1.0.png)
+![Strucktogramm](./Doc/struktogramm-v1.0.png)
 
 ## Script Ausführen
 
