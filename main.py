@@ -51,9 +51,7 @@ else:
 class LightSensor():
 
     def __init__(self):
-
         # Definiere Konstante vom Datenblatt
-
         self.DEVICE = 0x5c # Standart I2C Geräteadresse
 
         self.POWER_DOWN = 0x00 # Kein aktiver zustand
@@ -78,13 +76,11 @@ class LightSensor():
 
 
     def convertToNumber(self, data):
-
         # Einfache Funktion um 2 Bytes Daten
         # in eine Dezimalzahl umzuwandeln
         return ((data[1] + (256 * data[0])) / 1.2)
 
     def readLight(self):
-
         data = bus.read_i2c_block_data(self.DEVICE,self.ONE_TIME_HIGH_RES_MODE_1)
         return self.convertToNumber(data)
 
@@ -125,7 +121,6 @@ class Matrix():
                 0b10011001,
                 0b01000010,
                 0b00111100,
-
             ]
         }
 
@@ -150,6 +145,7 @@ def main(stdscr):
         stdscr.addstr(line_number, 14, data)
 
     def addKeyDescriptionToTerminal(line_number, key, description):
+        line_number += 4
         stdscr.addstr(line_number, 0, key)
         stdscr.addstr(line_number, 10, "->")
         stdscr.addstr(line_number, 12, description)
