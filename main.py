@@ -93,28 +93,28 @@ class Matrix():
         self.serial = spi(port=0, device=1, gpio=noop())
         self.device = max7219(self.serial, cascaded=cascaded or 1, block_orientation=block_orientation, rotate=rotate or 0)
 
-    def show_arrow(self, direction):
+    def show_pattern(self, direction):
         # Define arrow patterns for each direction
         arrows = {
             'up': [
-                0b00000000,
                 0b00011000,
                 0b00111100,
                 0b01111110,
+                0b11111111,
                 0b00011000,
                 0b00011000,
                 0b00011000,
                 0b00011000,
             ],
             'down': [
+                0b00011000,
+                0b00011000,
+                0b00011000,
+                0b00011000,
+                0b01111110,
+                0b00111100,
+                0b00011000,
                 0b00000000,
-                0b00000000,
-                0b00111000,
-                0b00111000,
-                0b00111000,
-                0b11111110,
-                0b01111100,
-                0b00111000,
             ]
         }
 
@@ -164,7 +164,7 @@ def main(stdscr):
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    matrix_field.show_arrow("up")
+    matrix_field.show_pattern("up")
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
