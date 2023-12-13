@@ -8,6 +8,7 @@ import time
 import curses
 import board
 import busio
+import smbus
 import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 
@@ -38,6 +39,52 @@ i2c = busio.I2C(board.SCL, board.SDA)
 
 # Festlegen des LCDs in die Variable LCD
 lcd = character_lcd.Character_LCD_I2C(i2c, lcd_columns, lcd_rows, 0x21)
+
+if(GPIO.RPI_REVISION == 1):
+    bus = smbus.SMBus(0)
+else:
+    bus = smbus.SMBus(1)
+
+class LightSensor():
+
+    def __init__(self):
+
+        # Definiere Konstante vom Datenblatt
+
+        self.DEVICE = 0x5c # Standart I2C Geräteadresse
+
+        self.POWER_DOWN = 0x00 # Kein aktiver zustand
+        self.POWER_ON = 0x01 # Betriebsbereit
+        self.RESET = 0x07 # Reset des Data registers
+
+        # Starte Messungen ab 4 Lux.
+        self.CONTINUOUS_LOW_RES_MODE = 0x13
+        # Starte Messungen ab 1 Lux.
+        self.CONTINUOUS_HIGH_RES_MODE_1 = 0x10
+        # Starte Messungen ab 0.5 Lux.
+        self.CONTINUOUS_HIGH_RES_MODE_2 = 0x11
+        # Starte Messungen ab 1 Lux.
+        # Nach messung wird Gerät in einen inaktiven Zustand gesetzt.
+        self.ONE_TIME_HIGH_RES_MODE_1 = 0x20
+        # Starte Messungen ab 0.5 Lux.
+        # Nach messung wird Gerät in einen inaktiven Zustand gesetzt.
+        self.ONE_TIME_HIGH_RES_MODE_2 = 0x21
+        # Starte Messungen ab 4 Lux.
+        # Nach messung wird Gerät in einen inaktiven Zustand gesetzt.
+        self.ONE_TIME_LOW_RES_MODE = 0x23
+
+
+    def convertToNumber(self, data):
+
+        # Einfache Funktion um 2 Bytes Daten
+        # in eine Dezimalzahl umzuwandeln
+        return ((data[1] + (256 * data[0])) / 1.2)
+
+    def readLight(self):
+
+        data = bus.read_i2c_block_data(self.DEVICE,self.ONE_TIME_HIGH_RES_MODE_1)
+        return self.convertToNumber(data)
+
 
 def main(stdscr):
 
@@ -70,6 +117,8 @@ def main(stdscr):
     # Speichert die Zeit der letzten Anzeigeaktualisierung.
     last_display_time = time.time()
 
+    light_sensor = LightSensor()
+
     while True:
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(0.5)
@@ -95,7 +144,8 @@ def main(stdscr):
         # Zeigt die gemessenen Werte im Terminal an.
         addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
         addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
-        addDataLineToTerminal(2, "Messung:", f"{measurements}")
+        addDataLineToTerminal(2, "Heligkeit:", f"{light_sensor.readLight()} lx")
+        addDataLineToTerminal(3, "Messung:", f"{measurements}")
         stdscr.refresh()
 
         # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
