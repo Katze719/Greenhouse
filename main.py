@@ -113,7 +113,7 @@ def main(stdscr):
             segment.set_digit_raw(3, 0b11110011)
         segment.show()
 
-        lcd.message = f"Temperatur: {result.temperature}C\nFeuchte: {result.humidity}%"
+        lcd.message = f"Temperatur:{result.temperature}C\nFeuchte:   {result.humidity}%"
 
 
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
