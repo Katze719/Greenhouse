@@ -111,10 +111,21 @@ class Matrix():
                 0b00011000,
                 0b00011000,
                 0b00011000,
+                0b11111111,
                 0b01111110,
                 0b00111100,
                 0b00011000,
-                0b00000000,
+            ],
+            'smiley': [
+                0b00111100,
+                0b01000010,
+                0b10100101,
+                0b10000001,
+                0b10100101,
+                0b10011001,
+                0b01000010,
+                0b00111100,
+
             ]
         }
 
@@ -164,7 +175,7 @@ def main(stdscr):
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    matrix_field.show_pattern("up")
+    matrix_field.show_pattern("smiley")
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
