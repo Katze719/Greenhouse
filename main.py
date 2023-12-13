@@ -42,8 +42,7 @@ lcd = character_lcd.Character_LCD_I2C(i2c, lcd_columns, lcd_rows, 0x21)
 def main(stdscr):
 
     # Hintergrundbeleuchtung einschalten
-    # lcd.backlight = True
-    lcd.backlight = False
+    lcd.backlight = True
 
     def addDataLineToTerminal(line_number, title, data):
         stdscr.addstr(line_number, 0, title)
