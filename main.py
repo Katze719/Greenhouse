@@ -145,7 +145,7 @@ def main(stdscr):
         addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
         addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
         addDataLineToTerminal(2, "Heligkeit:", 30 * ' ')
-        addDataLineToTerminal(2, "Heligkeit:", f"{light_sensor.readLight()} lx")
+        addDataLineToTerminal(2, "Heligkeit:", f"{round(light_sensor.readLight())} lx")
         addDataLineToTerminal(3, "Messung:", f"{measurements}")
         stdscr.refresh()
 
