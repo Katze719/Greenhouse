@@ -147,8 +147,8 @@ def main(stdscr):
     def addKeyDescriptionToTerminal(line_number, key, description):
         line_number += 4
         stdscr.addstr(line_number, 0, key)
-        stdscr.addstr(line_number, 10, "->")
-        stdscr.addstr(line_number, 12, description)
+        stdscr.addstr(line_number, 12, "->")
+        stdscr.addstr(line_number, 15, description)
 
     # Initialisiert die Anzahl der Messungen.
     measurements = 0
