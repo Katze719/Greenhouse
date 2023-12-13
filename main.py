@@ -13,10 +13,6 @@ import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
-from luma.core.render import canvas
-from luma.core.virtual import viewport
-from luma.core.legacy import text, show_message
-from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -96,6 +92,39 @@ class Matrix():
         self.serial = spi(port=0, device=1, gpio=noop())
         self.device = max7219(self.serial, cascaded=cascaded or 1, block_orientation=block_orientation, rotate=rotate or 0)
 
+    def show_arrow(self, direction):
+        # Define arrow patterns for each direction
+        arrows = {
+            'up': [
+                0b00111000,
+                0b01111100,
+                0b11111110,
+                0b00111000,
+                0b00111000,
+                0b00111000,
+                0b00000000,
+                0b00000000,
+            ],
+            'down': [
+                0b00000000,
+                0b00000000,
+                0b00111000,
+                0b00111000,
+                0b00111000,
+                0b11111110,
+                0b01111100,
+                0b00111000,
+            ]
+        }
+
+        # Get the arrow pattern for the specified direction
+        arrow_pattern = arrows.get(direction.lower())
+
+        if arrow_pattern:
+            # Display the arrow pattern on the matrix
+            for i in range(8):
+                self.device.letter(i, 0, arrow_pattern[i])
+
 
 def main(stdscr):
 
@@ -132,8 +161,7 @@ def main(stdscr):
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    
-    show_message(matrix_field.device, "Hello Steve, Was geht ab?", fill="white", font=proportional(CP437_FONT), scroll_delay=0.1)
+    matrix_field.show_arrow("up")
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
