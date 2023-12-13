@@ -121,7 +121,7 @@ def main(stdscr):
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
-        time.sleep(0.5)
+        time.sleep(1)
 
         # Speichert die aktuelle Zeit.
         current_time = time.time()
