@@ -43,6 +43,7 @@ def main(stdscr):
 
     # Hintergrundbeleuchtung einschalten
     # lcd.backlight = True
+    lcd.backlight = False
 
     def addDataLineToTerminal(line_number, title, data):
         stdscr.addstr(line_number, 0, title)
@@ -122,3 +123,5 @@ if __name__ == '__main__':
         curses.wrapper(main)
     except KeyboardInterrupt:
         segment.fill(0)
+        lcd.clear()
+        lcd.backlight = False
