@@ -166,6 +166,8 @@ def main(stdscr):
     addKeyDescriptionToTerminal(6, "Rechtsklick", "Konsole Weiter")
 
     def startLightSensor():
+        global programm_run
+        
         # Initialisiert die Anzahl der Messungen.
         measurements = 0
 
@@ -179,6 +181,8 @@ def main(stdscr):
             addDataLineToTerminal(5, "Messung light:", f"{measurements}")
 
     def startTempAndHumidSensor():
+        global programm_run
+
         # Initialisiert die Anzahl der Messungen.
         measurements = 0
 
