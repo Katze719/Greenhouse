@@ -236,6 +236,9 @@ def main(stdscr):
     thread_light_sensor.start()
     thread_temp_humid_sensor.start()
 
+    while True:
+        time.sleep(0.1)
+
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
