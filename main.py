@@ -11,6 +11,12 @@ import busio
 import smbus
 import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
+from luma.led_matrix.device import max7219
+from luma.core.interface.serial import spi, noop
+from luma.core.render import canvas
+from luma.core.virtual import viewport
+from luma.core.legacy import text, show_message
+from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -85,6 +91,11 @@ class LightSensor():
         data = bus.read_i2c_block_data(self.DEVICE,self.ONE_TIME_HIGH_RES_MODE_1)
         return self.convertToNumber(data)
 
+class Matrix():
+    def __init__(self, cascaded, block_orientation, rotate) -> None:
+        self.serial = spi(port=0, device=1, gpio=noop())
+        self.device = max7219(self.serial, cascaded=cascaded or 1, block_orientation=block_orientation, rotate=rotate or 0)
+
 
 def main(stdscr):
 
@@ -118,6 +129,11 @@ def main(stdscr):
     last_display_time = time.time()
 
     light_sensor = LightSensor()
+
+    matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
+
+    
+    show_message(matrix_field.device, "Hello Steve, Was geht ab?", fill="white", font=proportional(CP437_FONT), scroll_delay=0.1)
 
     while True:
         # Verzögert die Schleife um 1 Sekunde.
