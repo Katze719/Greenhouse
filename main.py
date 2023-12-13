@@ -7,6 +7,8 @@ import dht11
 import time
 import curses
 import board
+import busio
+import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 
 # Deaktiviert GPIO-Warnungen.
@@ -27,7 +29,20 @@ segment = Seg7x4(i2c, address=0x70)
 segment.fill(0)
 segment.colon = False
 
+# Definiere LCD Zeilen und Spaltenanzahl.
+lcd_columns = 16
+lcd_rows    = 2
+
+# Initialisierung I2C Bus
+i2c = busio.I2C(board.SCL, board.SDA)
+
+# Festlegen des LCDs in die Variable LCD
+lcd = character_lcd.Character_LCD_I2C(i2c, lcd_columns, lcd_rows, 0x21)
+
 def main(stdscr):
+
+    # Hintergrundbeleuchtung einschalten
+    lcd.backlight = True
 
     def addDataLineToTerminal(line_number, title, data):
         stdscr.addstr(line_number, 0, title)
@@ -97,6 +112,9 @@ def main(stdscr):
             segment[2] = str(result.humidity)[3]
             segment.set_digit_raw(3, 0b11110011)
         segment.show()
+
+        lcd.message = f"Temp: {result.temperature} C\n{result.humidity} %"
+
 
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
