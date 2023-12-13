@@ -13,6 +13,7 @@ import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
+from luma.core.render import canvas
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -122,9 +123,11 @@ class Matrix():
 
         if arrow_pattern:
             # Display the arrow pattern on the matrix
-            for i in range(8):
-                self.device.letter(i, 0, arrow_pattern[i])
-
+            with canvas(self.device) as draw:
+                for i in range(8):
+                    for j in range(8):
+                        if arrow_pattern[i] & (1 << (7 - j)):
+                            draw.point((j, i), fill="white")
 
 def main(stdscr):
 
