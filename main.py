@@ -37,7 +37,7 @@ segment.colon = False
 
 # Definiere LCD Zeilen und Spaltenanzahl.
 lcd_columns = 16
-lcd_rows    = 2
+lcd_rows = 2
 
 # Initialisierung I2C Bus
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -180,10 +180,10 @@ def main():
         lux = light_sensor.readLight()
 
         # Zeigt die gemessenen Werte im Terminal an.
-        logger.info("Temperatur:", f"{result.temperature} C")
-        logger.info("Feuchtigkeit:", f"{result.humidity} %")
-        logger.info("Heligkeit:", f"{lux} lx")
-        logger.info("Messung:", f"{measurements}")
+        logger.info(f"Temperatur: {result.temperature} C")
+        logger.info(f"Feuchtigkeit: {result.humidity} %")
+        logger.info(f"Heligkeit: {lux} lx")
+        logger.info(f"Messung: {measurements}")
 
         if lux > 65000:
             matrix_field.showPattern("up")
