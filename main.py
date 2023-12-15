@@ -5,7 +5,7 @@
 import RPi.GPIO as GPIO
 import dht11
 import time
-import curses
+import logging
 import board
 import busio
 import smbus
@@ -14,6 +14,8 @@ from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
+
+logger = logging.getLogger()
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -135,31 +137,13 @@ class Matrix():
                         if arrow_pattern[i] & (1 << (7 - j)):
                             draw.point((j, i), fill="white")
 
-def main(stdscr):
+def main():
 
     # Hintergrundbeleuchtung einschalten
     lcd.backlight = True
 
-    def addDataLineToTerminal(line_number, title, data):
-        stdscr.addstr(line_number, 0, title)
-        stdscr.addstr(line_number, 14, data)
-
-    def addKeyDescriptionToTerminal(line_number, key, description):
-        line_number += 4
-        stdscr.addstr(line_number, 0, key)
-        stdscr.addstr(line_number, 12, "->")
-        stdscr.addstr(line_number, 15, description)
-
     # Initialisiert die Anzahl der Messungen.
     measurements = 0
-
-    # Blendet den Cursor in der Terminalausgabe aus.
-    curses.curs_set(0)
-
-    # Fügt Informationen zur Bedienung des Programms im Terminal hinzu.
-    addKeyDescriptionToTerminal(4, "Strg+C", "Programm Abbrechen")
-    addKeyDescriptionToTerminal(5, "Linksklick", "Konsole Pausieren (Programm läuft im Hintergrund weiter)")
-    addKeyDescriptionToTerminal(6, "Rechtsklick", "Konsole Weiter")
 
     # Eine Variable, um zwischen Temperatur und Feuchtigkeit auf dem 7-Segment-Display zu wechseln.
     change = 0
@@ -196,12 +180,10 @@ def main(stdscr):
         lux = light_sensor.readLight()
 
         # Zeigt die gemessenen Werte im Terminal an.
-        addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
-        addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
-        addDataLineToTerminal(2, "Heligkeit:", 30 * ' ')
-        addDataLineToTerminal(2, "Heligkeit:", f"{lux} lx")
-        addDataLineToTerminal(3, "Messung:", f"{measurements}")
-        stdscr.refresh()
+        logger.info("Temperatur:", f"{result.temperature} C")
+        logger.info("Feuchtigkeit:", f"{result.humidity} %")
+        logger.info("Heligkeit:", f"{lux} lx")
+        logger.info("Messung:", f"{measurements}")
 
         if lux > 65000:
             matrix_field.showPattern("up")
@@ -232,7 +214,7 @@ def main(stdscr):
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
-        curses.wrapper(main)
+        main()
     except KeyboardInterrupt:
         segment.fill(0)
         lcd.clear()
