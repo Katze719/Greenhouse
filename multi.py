@@ -97,7 +97,7 @@ class Matrix():
 
     def showPattern(self, direction):
         # Define arrow patterns for each direction
-        arrows = {
+        patterns = {
             'up': [
                 0b00011000,
                 0b00111100,
@@ -131,7 +131,7 @@ class Matrix():
         }
 
         # Get the arrow pattern for the specified direction
-        arrow_pattern = arrows.get(direction.lower())
+        arrow_pattern = patterns.get(direction.lower())
 
         if arrow_pattern:
             # Display the arrow pattern on the matrix
@@ -172,13 +172,22 @@ def main(stdscr):
         measurements = 0
 
         matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
-        matrix_field.showPattern("smiley")
 
         light_sensor = LightSensor()
 
         while programm_run:
-            addDataLineToTerminal(4, "Heligkeit:", f"{light_sensor.readLight()} lx")
+
+            lux = light_sensor.readLight()
+
+            addDataLineToTerminal(4, "Heligkeit:", f"{lux} lx")
             addDataLineToTerminal(5, "Messung light:", f"{measurements}")
+
+            if lux > 65000:
+                matrix_field.showPattern("up")
+            elif lux < 45000:
+                matrix_field.showPattern("down")
+            else:
+                matrix_field.showPattern("smiley")
 
     def startTempAndHumidSensor():
         global programm_run
