@@ -171,8 +171,6 @@ def main(stdscr):
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    matrix_field.showPattern("smiley")
-
     while True:
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(1)
@@ -195,13 +193,23 @@ def main(stdscr):
         while not result.is_valid():
             result = instance.read()
 
+        lux = light_sensor.readLight()
+
         # Zeigt die gemessenen Werte im Terminal an.
         addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
         addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
         addDataLineToTerminal(2, "Heligkeit:", 30 * ' ')
-        addDataLineToTerminal(2, "Heligkeit:", f"{light_sensor.readLight()} lx")
+        addDataLineToTerminal(2, "Heligkeit:", f"{lux} lx")
         addDataLineToTerminal(3, "Messung:", f"{measurements}")
         stdscr.refresh()
+
+        if lux > 65000:
+            matrix_field.showPattern("up")
+        elif lux < 45000:
+            matrix_field.showPattern("down")
+        else:
+            matrix_field.showPattern("smiley")
+
 
         # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
         if change == 0:
