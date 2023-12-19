@@ -251,6 +251,7 @@ def main():
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
+        print("Programm start")
         logger.info("Programm start")
         main()
     except KeyboardInterrupt:
