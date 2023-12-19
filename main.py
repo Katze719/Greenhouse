@@ -169,7 +169,7 @@ def main():
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    while True:
+    while True:        
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(1)
 
@@ -189,6 +189,7 @@ def main():
 
         # Wiederholt das Lesen, bis gültige Daten vorliegen.
         while not result.is_valid():
+            logger.warning("DHT11 Messwerte ungültig!")
             result = instance.read()
 
         lux = light_sensor.readLight()
@@ -228,8 +229,10 @@ def main():
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
+        logger.info("Programm start")
         main()
     except KeyboardInterrupt:
         segment.fill(0)
         lcd.clear()
         lcd.backlight = False
+        logger.info("Programm ende")

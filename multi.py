@@ -6,7 +6,6 @@ import RPi.GPIO as GPIO
 import dht11
 import time
 import multiprocessing 
-import curses
 import board
 import busio
 import logging
@@ -158,13 +157,10 @@ class Matrix():
                         if arrow_pattern[i] & (1 << (7 - j)):
                             draw.point((j, i), fill="white")
 
-def main(stdscr):
+def main():
 
     # Hintergrundbeleuchtung einschalten
     lcd.backlight = True
-
-    # Blendet den Cursor in der Terminalausgabe aus.
-    curses.curs_set(0)
 
     def startLightSensor():
         global programm_run
@@ -225,7 +221,6 @@ def main(stdscr):
             logger.debug(f"Temperatur: {result.temperature} C")
             logger.debug(f"Feuchtigkeit: {result.humidity} %")
             logger.debug(f"Messung: {measurements}")
-            stdscr.refresh()
 
             # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
             if change == 0:
@@ -256,7 +251,8 @@ def main(stdscr):
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
-        curses.wrapper(main)
+        logger.info("Programm start")
+        main()
     except KeyboardInterrupt:
         programm_run = False
         segment.fill(0)
@@ -264,3 +260,4 @@ if __name__ == '__main__':
         lcd.backlight = False
         thread_light_sensor.join()
         thread_temp_humid_sensor.join()
+        logger.info("Programm ende")
