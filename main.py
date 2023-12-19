@@ -16,6 +16,7 @@ from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
 
 logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -180,10 +181,10 @@ def main():
         lux = light_sensor.readLight()
 
         # Zeigt die gemessenen Werte im Terminal an.
-        logger.info(f"Temperatur: {result.temperature} C")
-        logger.info(f"Feuchtigkeit: {result.humidity} %")
-        logger.info(f"Heligkeit: {lux} lx")
-        logger.info(f"Messung: {measurements}")
+        logger.debug(f"Temperatur: {result.temperature} C")
+        logger.debug(f"Feuchtigkeit: {result.humidity} %")
+        logger.debug(f"Heligkeit: {lux} lx")
+        logger.debug(f"Messung: {measurements}")
 
         if lux > 65000:
             matrix_field.showPattern("up")
