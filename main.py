@@ -15,7 +15,7 @@ from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
 
-logger = logging.getLogger("greenhouse_script")
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 fh = logging.FileHandler('debug.log')
@@ -24,7 +24,7 @@ fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.ERROR)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(relativeCreated)6d - %(threadName)s - %(asctime)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)
 ch.setFormatter(formatter)
 
