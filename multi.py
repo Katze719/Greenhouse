@@ -9,12 +9,15 @@ import multiprocessing
 import curses
 import board
 import busio
+import logging
 import smbus
 import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
+
+logger = logging.getLogger()
 
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
@@ -146,24 +149,8 @@ def main(stdscr):
     # Hintergrundbeleuchtung einschalten
     lcd.backlight = True
 
-    def addDataLineToTerminal(line_number, title, data):
-        stdscr.addstr(line_number, 0, title)
-        stdscr.addstr(line_number, 14, data)
-
-    def addKeyDescriptionToTerminal(line_number, key, description):
-        line_number += 4
-        stdscr.addstr(line_number, 0, key)
-        stdscr.addstr(line_number, 12, "->")
-        stdscr.addstr(line_number, 15, description)
-
-
     # Blendet den Cursor in der Terminalausgabe aus.
     curses.curs_set(0)
-
-    # Fügt Informationen zur Bedienung des Programms im Terminal hinzu.
-    addKeyDescriptionToTerminal(4, "Strg+C", "Programm Abbrechen")
-    addKeyDescriptionToTerminal(5, "Linksklick", "Konsole Pausieren (Programm läuft im Hintergrund weiter)")
-    addKeyDescriptionToTerminal(6, "Rechtsklick", "Konsole Weiter")
 
     def startLightSensor():
         global programm_run
@@ -179,8 +166,8 @@ def main(stdscr):
 
             lux = light_sensor.readLight()
 
-            addDataLineToTerminal(4, "Heligkeit:", f"{lux} lx")
-            addDataLineToTerminal(5, "Messung light:", f"{measurements}")
+            logger.info(f"Heligkeit: {lux} lx")
+            logger.info(f"Messung light: {measurements}")
 
             if lux > 65000:
                 matrix_field.showPattern("up")
@@ -221,9 +208,9 @@ def main(stdscr):
                 result = instance.read()
 
             # Zeigt die gemessenen Werte im Terminal an.
-            addDataLineToTerminal(0, "Temperatur:", f"{result.temperature} C")
-            addDataLineToTerminal(1, "Feuchtigkeit:", f"{result.humidity} %")
-            addDataLineToTerminal(2, "Messung:", f"{measurements}")
+            logger.info(f"Temperatur: {result.temperature} C")
+            logger.info(f"Feuchtigkeit: {result.humidity} %")
+            logger.info(f"Messung: {measurements}")
             stdscr.refresh()
 
             # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
