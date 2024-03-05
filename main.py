@@ -200,9 +200,9 @@ def main():
         logger.debug(f"Heligkeit: {lux} lx")
         logger.debug(f"Messung: {measurements}")
 
-        if lux > 65000:
+        if lux > 50000:
             matrix_field.showPattern("up")
-        elif lux < 45000:
+        elif lux < 15000:
             matrix_field.showPattern("down")
         else:
             matrix_field.showPattern("smiley")
