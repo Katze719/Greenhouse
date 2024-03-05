@@ -191,6 +191,7 @@ def main():
         while not result.is_valid():
             logger.warning("DHT11 Messwerte ungültig!")
             result = instance.read()
+            time.sleep(0.1)
 
         lux = light_sensor.readLight()
 
