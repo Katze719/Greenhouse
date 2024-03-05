@@ -237,3 +237,5 @@ if __name__ == '__main__':
         lcd.clear()
         lcd.backlight = False
         logger.info("Programm ende")
+    except Exception as e:
+        logger.error(f"Fehler im Programm: {str(e)}")
