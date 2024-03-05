@@ -22,7 +22,7 @@ fh = logging.FileHandler('debug.log')
 fh.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
+ch.setLevel(logging.INFO)
 
 formatter = logging.Formatter('%(relativeCreated)6d - %(threadName)s - %(asctime)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)
@@ -230,7 +230,6 @@ def main():
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
 if __name__ == '__main__':
     try:
-        print("Programm start")
         logger.info("Programm start")
         main()
     except KeyboardInterrupt:
