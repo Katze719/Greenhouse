@@ -262,3 +262,5 @@ if __name__ == '__main__':
         # thread_light_sensor.join()
         # thread_temp_humid_sensor.join()
         logger.info("Programm ende")
+    except Exception as e:
+        logger.error(f"Fehler im Programm: {str(e)}")
