@@ -22,7 +22,7 @@ fh = logging.FileHandler('debug.log')
 fh.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
+ch.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter('%(relativeCreated)6d - %(threadName)s - %(asctime)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)

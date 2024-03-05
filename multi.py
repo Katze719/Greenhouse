@@ -259,6 +259,6 @@ if __name__ == '__main__':
         segment.fill(0)
         lcd.clear()
         lcd.backlight = False
-        thread_light_sensor.join()
-        thread_temp_humid_sensor.join()
+        # thread_light_sensor.join()
+        # thread_temp_humid_sensor.join()
         logger.info("Programm ende")
