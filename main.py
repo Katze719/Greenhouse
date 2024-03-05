@@ -203,7 +203,7 @@ def main():
 
         if lux > 50000:
             matrix_field.showPattern("up")
-        elif lux < 15000:
+        elif lux < 35000:
             matrix_field.showPattern("down")
         else:
             matrix_field.showPattern("smiley")
