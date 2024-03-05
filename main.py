@@ -94,7 +94,7 @@ class LightSensor():
     def convertToNumber(self, data):
         # Einfache Funktion um 2 Bytes Daten
         # in eine Dezimalzahl umzuwandeln
-        return ((data[1] + (256 * data[0])) / 1.2)
+        return ((data[1] + (256 * data[0])))
 
     def readLight(self):
         data = bus.read_i2c_block_data(self.DEVICE,self.ONE_TIME_HIGH_RES_MODE_1)
@@ -106,7 +106,7 @@ class Matrix():
         self.device = max7219(self.serial, cascaded=cascaded or 1, block_orientation=block_orientation, rotate=rotate or 0)
 
     def showPattern(self, direction):
-        # Define arrow patterns for each direction
+        # Definition von Pattern
         arrows = {
             'up': [
                 0b00011000,
@@ -140,11 +140,11 @@ class Matrix():
             ]
         }
 
-        # Get the arrow pattern for the specified direction
+        # Macht alle Großbuchstaben klein
         arrow_pattern = arrows.get(direction.lower())
 
         if arrow_pattern:
-            # Display the arrow pattern on the matrix
+            # Zeige das Bild auf der Matrix an
             with canvas(self.device) as draw:
                 for i in range(8):
                     for j in range(8):
