@@ -94,7 +94,7 @@ class LightSensor():
     def convertToNumber(self, data):
         # Einfache Funktion um 2 Bytes Daten
         # in eine Dezimalzahl umzuwandeln
-        return ((data[1] + (256 * data[0])))
+        return ((data[1] + (256 * data[0])) / 1.2)
 
     def readLight(self):
         data = bus.read_i2c_block_data(self.DEVICE,self.ONE_TIME_HIGH_RES_MODE_1)
