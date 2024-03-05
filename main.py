@@ -189,7 +189,7 @@ def main():
 
         # Wiederholt das Lesen, bis gültige Daten vorliegen.
         while not result.is_valid():
-            logger.warning("DHT11 Messwerte ungültig!")
+            logger.debug("DHT11 Messwerte ungültig!")
             result = instance.read()
             time.sleep(0.1)
 
