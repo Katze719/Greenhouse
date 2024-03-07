@@ -94,7 +94,11 @@ class LightSensor():
     def convertToNumber(self, data):
         # Einfache Funktion um 2 Bytes Daten
         # in eine Dezimalzahl umzuwandeln
-        # https://github.com/claws/BH1750 begründung zu den / 1.2
+        # https://github.com/claws/BH1750
+        # official doku:
+        # High Byte   = "1000_0011" 
+        # Low Byte    = "1001_0000"    
+        # ( 2^15 + 2^9 + 2^8 + 2^7 + 2^4 ) / 1.2  =  28067 [ lx ]  
         return ((data[1] + (256 * data[0])) / 1.2)
 
     def readLight(self):
