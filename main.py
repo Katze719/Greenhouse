@@ -171,9 +171,6 @@ def main():
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
     while True:        
-        # Verzögert die Schleife um 1 Sekunde.
-        time.sleep(1)
-
         # Speichert die aktuelle Zeit.
         current_time = time.time()
 
@@ -226,6 +223,9 @@ def main():
         segment.show()
 
         lcd.message = f"Temperatur:{result.temperature}C\nFeuchte:   {result.humidity}%"
+
+        # Verzögert die Schleife um 1 Sekunde.
+        time.sleep(1)
 
 
 # Der Hauptteil des Codes. Hier wird die curses-Bibliothek verwendet, um das Terminal-UI zu erstellen.
