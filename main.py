@@ -193,7 +193,7 @@ def main():
 
         lux = light_sensor.readLight()
 
-        # Zeigt die gemessenen Werte im Terminal an.
+        # Zeigt die gemessenen Werte im Terminal an wenn der Debug mode an ist
         logger.debug(f"Temperatur: {result.temperature} C")
         logger.debug(f"Feuchtigkeit: {result.humidity} %")
         logger.debug(f"Heligkeit: {lux} lx")
