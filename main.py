@@ -34,10 +34,25 @@ ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
+# definiere csv datei
 csv_file = "messwerte.csv"
-csv_data : list[list] = []
+csv_data : list = []
 
-# conn = sqlite3.connect("")
+# baue datenbank verbindung auf
+conn = sqlite3.connect("data.db")
+cursor = conn.cursor()
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS messwerte (
+    id INTEGER PRIMARY KEY,
+    Zeit TEXT NOT NULL,
+    Schaltzustand TEXT,
+    Temperatur TEXT,
+    Luftfeuchte TEXT,
+    Helligkeit TEXT,
+    Bewertung_der_Helligkeit TEXT
+)
+""")
+conn.commit()
 
 ################################################################################
 ################################################################################
@@ -301,7 +316,20 @@ def main():
             GPIO.output(relay_pin, GPIO.LOW)
 
         csv_data.append(csv_data_row)
+        # csv datei schreiben
         write_csv_file(csv_data)
+
+        # daten in die datenbank speichern
+        cursor.execute('INSERT INTO kunden (Zeit, Schaltzustand, Temperatur, Luftfeuchte, Helligkeit, Bewertung_der_Helligkeit) VALUES (?, ?, ?, ?, ?, ?)',
+        (
+            csv_data_row[0], 
+            csv_data_row[1], 
+            csv_data_row[2], 
+            csv_data_row[3], 
+            csv_data_row[4], 
+            csv_data_row[5]
+        ))
+        conn.commit()
 
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(1)
@@ -317,5 +345,6 @@ if __name__ == '__main__':
         lcd.clear()
         lcd.backlight = False
         logger.info("Programm ende")
+        conn.close()
     except Exception as e:
         logger.error(f"Fehler im Programm: {str(e)}")
