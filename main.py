@@ -10,6 +10,8 @@ import logging
 import board
 import busio
 import smbus
+import sqlite3
+import csv
 import adafruit_character_lcd.character_lcd_i2c as character_lcd
 from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
@@ -31,6 +33,11 @@ ch.setFormatter(formatter)
 
 logger.addHandler(fh)
 logger.addHandler(ch)
+
+csv_file = "messwerte.csv"
+csv_data : list[list] = []
+
+# conn = sqlite3.connect("")
 
 ################################################################################
 ################################################################################
@@ -177,6 +184,13 @@ class Matrix():
                         if arrow_pattern[i] & (1 << (7 - j)):
                             draw.point((j, i), fill="white")
 
+def write_csv_file(data):
+    with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Zeit', 'Schalzustand', 'Temperatur', 'Luftfeuchte', 'Helligkeit', 'Bewertung der Helligkeit'])
+        for zeile in data:
+            writer.writerow(zeile)
+
 def main():
 
     # Hintergrundbeleuchtung einschalten
@@ -201,9 +215,14 @@ def main():
 
     matrix_field = Matrix(cascaded=1, block_orientation=90, rotate=0)
 
-    while True:        
+    while True:     
+        # liste mit den gespeicherten daten
+        csv_data_row : list = []
+
         # Speichert die aktuelle Zeit.
         current_time = time.time()
+        csv_data_row.append(current_time) # zeit
+
 
         # Setzt die variable is_night auf True wenn es zwischen 20:00 und 6:00 uhr ist
         now = datetime.datetime.now()
@@ -211,6 +230,7 @@ def main():
             sun_time = True
         else:
             sun_time = False
+        csv_data_row.append(sun_time) # schaltzustand
 
 
         # Wechselt alle 5 Sekunden zwischen Temperatur und Feuchtigkeit.
@@ -238,15 +258,24 @@ def main():
         logger.debug(f"Heligkeit: {lux} lx")
         logger.debug(f"Messung: {measurements}")
 
+        csv_data_row.append(result.temperature) # temp
+        csv_data_row.append(result.humidity) # humid
+        csv_data_row.append(lux) # lux
+
+        bewertung = ""
         if lux > 50000:
             matrix_field.showPattern("up")
             needs_light = False
+            bewertung="zuviel licht"
         elif lux < 35000:
             matrix_field.showPattern("down")
             needs_light = True
+            bewertung="benötigt licht"
         else:
             matrix_field.showPattern("smiley")
+            bewertung="optimales licht"
 
+        csv_data_row.append(bewertung)
 
         # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
         if change == 0:
@@ -270,6 +299,9 @@ def main():
             GPIO.output(relay_pin, GPIO.HIGH)
         else:
             GPIO.output(relay_pin, GPIO.LOW)
+
+        csv_data.append(csv_data_row)
+        write_csv_file(csv_data)
 
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(1)
