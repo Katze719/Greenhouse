@@ -5,6 +5,7 @@
 import RPi.GPIO as GPIO
 import dht11
 import time
+import datetime
 import logging
 import board
 import busio
@@ -31,14 +32,34 @@ ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
+################################################################################
+################################################################################
+#### Set timeserver:                                                        ####
+#### sudo apt-get install ntp;                                              ####
+#### sudo systemctl stop systemd-timesyncd;                                 ####
+#### sudo systemctl disable systemd-timesyncd;                              ####
+#### ​sudo /etc/init.d/ntp stop;                                             ####
+#### ​sudo /etc/init.d/ntp start;                                            ####
+####                                                                        ####
+#### sudo nano /etc/ntp.conf;                                               ####
+#### change "server 192.168.178.1"                                          ####
+################################################################################
+################################################################################
+
 # Deaktiviert GPIO-Warnungen.
 GPIO.setwarnings(False)
 
 # Legt den Modus des GPIO-Pins auf den Broadcom SOC channel-Namen fest.
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
 
 # Bereinigt die GPIO-Pin-Konfiguration.
 GPIO.cleanup()
+
+# Define relay pin
+relay_pin = 40
+
+# set relay pin to out
+GPIO.setup(relay_pin, GPIO.OUT)
 
 # Initialisiert den DHT11-Sensor und weist ihm den GPIO-Pin 4 zu.
 instance = dht11.DHT11(pin=4)
@@ -167,6 +188,12 @@ def main():
     # Eine Variable, um zwischen Temperatur und Feuchtigkeit auf dem 7-Segment-Display zu wechseln.
     change = 0
 
+    # Speichert ob gerade nacht ist
+    sun_time = False
+
+    # Speichert ob mehr licht benötigt wird
+    needs_light = False
+
     # Speichert die Zeit der letzten Anzeigeaktualisierung.
     last_display_time = time.time()
 
@@ -177,6 +204,14 @@ def main():
     while True:        
         # Speichert die aktuelle Zeit.
         current_time = time.time()
+
+        # Setzt die variable is_night auf True wenn es zwischen 20:00 und 6:00 uhr ist
+        now = datetime.datetime.now()
+        if (now.hour >= 6) or (now.hour < 18):
+            sun_time = True
+        else:
+            sun_time = False
+
 
         # Wechselt alle 5 Sekunden zwischen Temperatur und Feuchtigkeit.
         if current_time - last_display_time >= 5:
@@ -205,8 +240,10 @@ def main():
 
         if lux > 50000:
             matrix_field.showPattern("up")
+            needs_light = False
         elif lux < 35000:
             matrix_field.showPattern("down")
+            needs_light = True
         else:
             matrix_field.showPattern("smiley")
 
@@ -227,6 +264,12 @@ def main():
         segment.show()
 
         lcd.message = f"Temperatur:{result.temperature}C\nFeuchte:   {result.humidity}%"
+
+        # wenn lichtzeit ist und licht gebraucht wird, geht der relay an
+        if sun_time and needs_light:
+            GPIO.output(relay_pin, GPIO.HIGH)
+        else:
+            GPIO.output(relay_pin, GPIO.LOW)
 
         # Verzögert die Schleife um 1 Sekunde.
         time.sleep(1)
