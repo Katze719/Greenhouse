@@ -285,8 +285,6 @@ def main():
             matrix_field.showPattern("smiley")
             bewertung="optimales licht"
 
-        csv_data_row.append(bewertung)
-
         # Aktualisiert das 7-Segment-Display mit den Sensorwerten.
         if change == 0:
             segment[0] = str(result.temperature)[0]
@@ -320,6 +318,7 @@ def main():
         csv_data_row.append(result.temperature) # temp
         csv_data_row.append(result.humidity) # humid
         csv_data_row.append(lux) # lux
+        csv_data_row.append(bewertung)
 
         csv_data.append(csv_data_row)
         # csv datei schreiben
