@@ -320,7 +320,7 @@ def main():
         write_csv_file(csv_data)
 
         # daten in die datenbank speichern
-        cursor.execute('INSERT INTO kunden (Zeit, Schaltzustand, Temperatur, Luftfeuchte, Helligkeit, Bewertung_der_Helligkeit) VALUES (?, ?, ?, ?, ?, ?)',
+        cursor.execute('INSERT INTO messwerte (Zeit, Schaltzustand, Temperatur, Luftfeuchte, Helligkeit, Bewertung_der_Helligkeit) VALUES (?, ?, ?, ?, ?, ?)',
         (
             csv_data_row[0], 
             csv_data_row[1], 
