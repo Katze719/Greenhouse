@@ -69,14 +69,8 @@ conn.commit()
 ################################################################################
 ################################################################################
 
-# Deaktiviert GPIO-Warnungen.
-GPIO.setwarnings(False)
-
 # Legt den Modus des GPIO-Pins auf den Broadcom SOC channel-Namen fest.
 GPIO.setmode(GPIO.BOARD) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
-
-# Bereinigt die GPIO-Pin-Konfiguration.
-GPIO.cleanup()
 
 # Define relay pin
 relay_pin = 40
