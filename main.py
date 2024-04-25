@@ -307,12 +307,12 @@ def main():
         # wenn lichtzeit ist und licht gebraucht wird, geht der relay an
         relay_on = False
         if sun_time and needs_light:
-            GPIO.output(relay_pin, GPIO.HIGH)
-            relay_on = True
-
-        else:
             GPIO.output(relay_pin, GPIO.LOW)
             relay_on = False
+
+        else:
+            GPIO.output(relay_pin, GPIO.HIGH)
+            relay_on = True
 
         logger.debug(f"Relay: {relay_on}")
 
