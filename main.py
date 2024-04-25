@@ -246,8 +246,6 @@ def main():
             sun_time = True
         else:
             sun_time = False
-        csv_data_row.append(sun_time) # schaltzustand
-
 
         # Wechselt alle 5 Sekunden zwischen Temperatur und Feuchtigkeit.
         if current_time - last_display_time >= 5:
@@ -273,10 +271,6 @@ def main():
         logger.debug(f"Feuchtigkeit: {result.humidity} %")
         logger.debug(f"Heligkeit: {lux} lx")
         logger.debug(f"Messung: {measurements}")
-
-        csv_data_row.append(result.temperature) # temp
-        csv_data_row.append(result.humidity) # humid
-        csv_data_row.append(lux) # lux
 
         bewertung = ""
         if lux > 50000:
@@ -311,10 +305,21 @@ def main():
         lcd.message = f"Temperatur:{result.temperature}C\nFeuchte:   {result.humidity}%"
 
         # wenn lichtzeit ist und licht gebraucht wird, geht der relay an
+        relay_on = False
         if sun_time and needs_light:
             GPIO.output(relay_pin, GPIO.HIGH)
+            relay_on = True
+
         else:
             GPIO.output(relay_pin, GPIO.LOW)
+            relay_on = False
+
+        logger.debug(f"Relay: {relay_on}")
+
+        csv_data_row.append(relay_on) # schaltzustand
+        csv_data_row.append(result.temperature) # temp
+        csv_data_row.append(result.humidity) # humid
+        csv_data_row.append(lux) # lux
 
         csv_data.append(csv_data_row)
         # csv datei schreiben
