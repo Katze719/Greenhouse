@@ -306,11 +306,11 @@ def main():
         relay_on = False
         if sun_time and needs_light:
             GPIO.output(relay_pin, GPIO.LOW)
-            relay_on = False
+            relay_on = True
 
         else:
             GPIO.output(relay_pin, GPIO.HIGH)
-            relay_on = True
+            relay_on = False
 
         logger.debug(f"Relay: {relay_on}")
 
