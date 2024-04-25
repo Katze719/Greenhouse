@@ -76,10 +76,10 @@ GPIO.cleanup()
 GPIO.setwarnings(False)
 
 # Legt den Modus des GPIO-Pins auf den Broadcom SOC channel-Namen fest.
-GPIO.setmode(GPIO.BOARD) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
+GPIO.setmode(GPIO.BCM) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
 
 # Define relay pin
-relay_pin = 40
+relay_pin = 21
 
 # set relay pin to out
 GPIO.setup(relay_pin, GPIO.OUT)
