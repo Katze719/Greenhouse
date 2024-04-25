@@ -204,8 +204,8 @@ def write_csv_file(data):
     with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(['Zeit', 'Schalzustand', 'Temperatur', 'Luftfeuchte', 'Helligkeit', 'Bewertung der Helligkeit'])
-        for zeile in data:
-            writer.writerow(zeile)
+        for row in data:
+            writer.writerow(row)
 
 def main():
 
@@ -324,10 +324,12 @@ def main():
         # csv datei schreiben
         write_csv_file(csv_data)
 
+        formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(csv_data_row[0]))
+
         # daten in die datenbank speichern
         cursor.execute('INSERT INTO messwerte (Zeit, Schaltzustand, Temperatur, Luftfeuchte, Helligkeit, Bewertung_der_Helligkeit) VALUES (?, ?, ?, ?, ?, ?)',
         (
-            csv_data_row[0], 
+            formatted_time, 
             csv_data_row[1], 
             csv_data_row[2], 
             csv_data_row[3], 
