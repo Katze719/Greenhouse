@@ -280,7 +280,7 @@ def main():
         elif lux < 35000:
             matrix_field.showPattern("down")
             needs_light = True
-            bewertung="benötigt licht"
+            bewertung="braucht licht"
         else:
             matrix_field.showPattern("smiley")
             bewertung="optimales licht"
