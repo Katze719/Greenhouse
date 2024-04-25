@@ -321,15 +321,15 @@ def main():
         csv_data_row.append(bewertung)
 
         csv_data.append(csv_data_row)
+        csv_data_row[0] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(csv_data_row[0]))
         # csv datei schreiben
         write_csv_file(csv_data)
 
-        formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(csv_data_row[0]))
 
         # daten in die datenbank speichern
         cursor.execute('INSERT INTO messwerte (Zeit, Schaltzustand, Temperatur, Luftfeuchte, Helligkeit, Bewertung_der_Helligkeit) VALUES (?, ?, ?, ?, ?, ?)',
         (
-            formatted_time, 
+            csv_data_row[0], 
             csv_data_row[1], 
             csv_data_row[2], 
             csv_data_row[3], 
