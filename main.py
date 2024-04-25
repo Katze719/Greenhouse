@@ -2,7 +2,6 @@
 # Dies ist eine Shebang-Zeile, die angibt, dass dieses Skript mit Python 3 ausgeführt werden soll.
 
 # Importieren von erforderlichen Modulen und Bibliotheken.
-import RPi.GPIO as GPIO
 import dht11
 import time
 import datetime
@@ -13,6 +12,10 @@ import smbus
 import sqlite3
 import csv
 import adafruit_character_lcd.character_lcd_i2c as character_lcd
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BOARD)
+
 from adafruit_ht16k33.segments import Seg7x4
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
@@ -70,7 +73,7 @@ conn.commit()
 ################################################################################
 
 # Legt den Modus des GPIO-Pins auf den Broadcom SOC channel-Namen fest.
-GPIO.setmode(GPIO.BOARD) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
+# GPIO.setmode(GPIO.BOARD) # changed ! achtung bitte überprüfen alte (GPIO.BCM)
 
 # Define relay pin
 relay_pin = 40
